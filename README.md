@@ -3,7 +3,16 @@
 > **Smart Invoice Collection & Cash Flow Intelligence for Indian Small Businesses 🇮🇳**  
 > *"Know who owes you. Chase the right payments. Protect your cash flow."*
 
+[![Download Android APK](https://img.shields.io/badge/Download-Android%20APK-1B4D3E?style=for-the-badge&logo=android&logoColor=white)](https://github.com/iakash2701/baaki/raw/main/Baaki.apk)
+[![Web Application](https://img.shields.io/badge/Web%20App-React%20%2B%20Vite-00796B?style=for-the-badge&logo=react&logoColor=white)](https://github.com/iakash2701/baaki/tree/main/web)
+
 ---
+
+## 📱 Android APK Download
+
+You can directly download and install the native Android APK on any Android device:
+
+👉 **[Download Baaki.apk (v1.0.0)](https://github.com/iakash2701/baaki/raw/main/Baaki.apk)** (~19.7 MB)
 
 ## 🌟 Overview
 
