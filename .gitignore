@@ -6,6 +6,21 @@ node_modules/
 # Production build
 dist/
 build/
+app/build/
+app/app/build/
+
+# Android & Gradle
+.gradle/
+.kotlin/
+local.properties
+*.apk
+*.aab
+*.ap_
+*.dex
+*.iml
+.externalNativeBuild/
+.cxx/
+captures/
 
 # Logs
 npm-debug.log*
