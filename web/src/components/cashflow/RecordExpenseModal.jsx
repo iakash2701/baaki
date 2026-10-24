@@ -44,33 +44,35 @@ export default function RecordExpenseModal({ isOpen, onClose, onRecord }) {
     <Modal isOpen={isOpen} onClose={onClose} title="Record Business Expense">
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="p-3 bg-red-50 border border-red-200 text-red-700 text-xs rounded-xl font-medium">
+          <div role="alert" className="p-3 bg-red-50 dark:bg-rose-950/60 border border-red-200 dark:border-rose-900 text-red-700 dark:text-rose-300 text-xs rounded-xl font-medium">
             {error}
           </div>
         )}
 
         <div>
-          <label className="block text-xs font-bold text-slate-700 mb-1.5">
+          <label htmlFor="expense-title" className="block text-xs font-bold text-slate-700 dark:text-[#A3A3A3] mb-1.5">
             Expense Description <span className="text-red-500">*</span>
           </label>
           <input
+            id="expense-title"
             type="text"
             required
             value={title}
             onChange={(e) => setTitle(e.target.value)}
             placeholder="e.g. Warehouse Electricity Bill"
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#1B4D3E] text-sm font-semibold"
+            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#2D2D2D] bg-white dark:bg-[#1C1C1C] text-slate-900 dark:text-[#F5F5F5] placeholder:text-slate-400 dark:placeholder:text-[#737373] focus:outline-none focus:ring-2 focus:ring-[#1B4D3E] text-sm font-semibold"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-700 mb-1.5">
+          <label htmlFor="expense-category" className="block text-xs font-bold text-slate-700 dark:text-[#A3A3A3] mb-1.5">
             Category <span className="text-red-500">*</span>
           </label>
           <select
+            id="expense-category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#1B4D3E] text-sm font-medium bg-white"
+            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#2D2D2D] bg-white dark:bg-[#1C1C1C] text-slate-900 dark:text-[#F5F5F5] focus:outline-none focus:ring-2 focus:ring-[#1B4D3E] text-sm font-medium"
           >
             <option value="SUPPLIES">Supplies & Raw Materials</option>
             <option value="RENT">Rent & Godown</option>
@@ -82,10 +84,11 @@ export default function RecordExpenseModal({ isOpen, onClose, onRecord }) {
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-700 mb-1.5">
+          <label htmlFor="expense-amount" className="block text-xs font-bold text-slate-700 dark:text-[#A3A3A3] mb-1.5">
             Amount (₹) <span className="text-red-500">*</span>
           </label>
           <input
+            id="expense-amount"
             type="number"
             step="0.01"
             min="0.01"
@@ -93,34 +96,35 @@ export default function RecordExpenseModal({ isOpen, onClose, onRecord }) {
             value={amountRupees}
             onChange={(e) => setAmountRupees(e.target.value)}
             placeholder="e.g. 15000"
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#1B4D3E] text-sm font-semibold"
+            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#2D2D2D] bg-white dark:bg-[#1C1C1C] text-slate-900 dark:text-[#F5F5F5] placeholder:text-slate-400 dark:placeholder:text-[#737373] focus:outline-none focus:ring-2 focus:ring-[#1B4D3E] text-sm font-semibold"
           />
         </div>
 
         <div>
-          <label className="block text-xs font-bold text-slate-700 mb-1.5">
+          <label htmlFor="expense-notes" className="block text-xs font-bold text-slate-700 dark:text-[#A3A3A3] mb-1.5">
             Notes / Vendor Details (Optional)
           </label>
           <input
+            id="expense-notes"
             type="text"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             placeholder="e.g. Paid via company debit card"
-            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-[#1B4D3E] text-sm font-medium"
+            className="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-[#2D2D2D] bg-white dark:bg-[#1C1C1C] text-slate-900 dark:text-[#F5F5F5] placeholder:text-slate-400 dark:placeholder:text-[#737373] focus:outline-none focus:ring-2 focus:ring-[#1B4D3E] text-sm font-medium"
           />
         </div>
 
-        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+        <div className="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 dark:border-[#2D2D2D]">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 text-sm font-semibold text-slate-600 hover:bg-slate-100 rounded-xl transition-colors"
+            className="px-4 py-2 text-sm font-semibold text-slate-600 dark:text-[#A3A3A3] hover:bg-slate-100 dark:hover:bg-[#1C1C1C] rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-5 py-2 text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-sm transition-all"
+            className="px-5 py-2 text-sm font-bold text-white bg-rose-600 hover:bg-rose-700 rounded-xl shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-rose-500"
           >
             Record Outflow
           </button>

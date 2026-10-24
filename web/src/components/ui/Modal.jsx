@@ -51,18 +51,18 @@ export default function Modal({ isOpen, onClose, title, children, maxWidth = 'ma
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
-        className={`relative w-full ${maxWidth} bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150`}
+        className={`relative w-full ${maxWidth} bg-white dark:bg-[#141414] rounded-2xl shadow-2xl border border-slate-200 dark:border-[#2D2D2D] overflow-hidden animate-in fade-in zoom-in-95 duration-150`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Header - H2 maintains proper heading order from H1 */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 bg-[#F8FAF9]">
-          <h2 id="modal-title" className="text-lg font-bold text-[#111C16]">
+        <div className="flex items-center justify-between px-6 py-4 border-b border-slate-100 dark:border-[#2D2D2D] bg-[#F8FAF9] dark:bg-[#0A0A0A]">
+          <h2 id="modal-title" className="text-lg font-bold text-[#111C16] dark:text-[#F5F5F5]">
             {title}
           </h2>
           <button
             onClick={onClose}
             aria-label="Close modal"
-            className="p-1 rounded-lg text-slate-400 hover:text-slate-600 hover:bg-slate-200/50 transition-colors focus:outline-none focus:ring-2 focus:ring-[#1B4D3E]"
+            className="p-1 rounded-lg text-slate-400 dark:text-[#A3A3A3] hover:text-slate-600 dark:hover:text-[#F5F5F5] hover:bg-slate-200/50 dark:hover:bg-[#1C1C1C] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1B4D3E]"
           >
             <X className="w-5 h-5" aria-hidden="true" />
           </button>
