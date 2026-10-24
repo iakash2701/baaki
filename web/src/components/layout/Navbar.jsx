@@ -9,7 +9,9 @@ import {
   Star,
   Activity,
   Menu,
-  LineChart
+  LineChart,
+  BarChart3,
+  Download
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -19,6 +21,7 @@ export default function Navbar() {
     { to: '/invoices', label: 'Invoices', icon: Receipt },
     { to: '/customers', label: 'Customers', icon: Users },
     { to: '/cashflow', label: 'Cash Flow', icon: Wallet },
+    { to: '/reports', label: 'Financial Reports', icon: BarChart3 },
     { to: '/intelligence', label: 'Intelligence', icon: LineChart },
     { to: '/showcase', label: 'Showcase', icon: Star },
     { to: '/more', label: 'More', icon: Menu, ariaLabel: 'More navigation and settings' }
@@ -29,7 +32,7 @@ export default function Navbar() {
     { to: '/', label: 'Home', icon: Home, end: true },
     { to: '/recovery', label: 'Recovery', icon: TrendingUp },
     { to: '/invoices', label: 'Invoices', icon: Receipt },
-    { to: '/customers', label: 'Customers', icon: Users },
+    { to: '/reports', label: 'Reports', icon: BarChart3 },
     { to: '/more', label: 'More', icon: Menu, ariaLabel: 'More navigation and settings' }
   ];
 
@@ -56,7 +59,7 @@ export default function Navbar() {
         </div>
 
         {/* Nav Links */}
-        <nav aria-label="Main Navigation" className="flex-1 py-6 px-3 overflow-y-auto">
+        <nav aria-label="Main Navigation" className="flex-1 py-4 px-3 overflow-y-auto">
           <h2 className="px-3 mb-2 text-xs font-bold text-slate-600 uppercase tracking-wider">
             Main Menu
           </h2>
@@ -86,16 +89,24 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        {/* Footer info card */}
+        {/* Footer info card with Android APK download */}
         <div className="p-4 border-t border-[#E2E8F0] bg-[#F8FAF9]/80">
           <div className="p-3 bg-white rounded-xl border border-slate-200/80 shadow-xs">
             <div className="flex items-center justify-between text-xs font-bold text-slate-700 mb-1">
-              <span>Collection Engine</span>
+              <span>Android App Active</span>
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
             </div>
             <p className="text-xs text-slate-600 leading-relaxed">
-              Offline-ready intelligence for Indian <abbr title="Business to Business" className="no-underline">B2B</abbr> suppliers.
+              v1.0.0 built from source. Offline-first Room database.
             </p>
+            <a
+              href="/baaki.apk"
+              download="Baaki.apk"
+              className="mt-2.5 flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-xl bg-[#1B4D3E] hover:bg-[#153f33] text-white text-xs font-bold shadow-2xs transition-all focus:outline-none focus:ring-2 focus:ring-[#1B4D3E]"
+            >
+              <Download className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>Download Android APK</span>
+            </a>
           </div>
         </div>
       </aside>

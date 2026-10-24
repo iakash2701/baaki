@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import Header from '../components/layout/Header';
 import StatusBadge from '../components/ui/StatusBadge';
@@ -30,6 +30,12 @@ export default function InvoiceDetailPage() {
 
   const details = getInvoiceDetails(id);
 
+  useEffect(() => {
+    if (details?.invoice?.invoiceNumber) {
+      document.title = `Invoice ${details.invoice.invoiceNumber} — Baaki`;
+    }
+  }, [details]);
+
   if (!details || !details.invoice) {
     return (
       <div className="pb-24 px-4 sm:px-8 py-12 max-w-4xl mx-auto text-center space-y-4">
@@ -56,18 +62,28 @@ export default function InvoiceDetailPage() {
         actionButton={
           <div className="flex items-center gap-2">
             <button
-              onClick={() => setIsShareOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-all shadow-xs"
+              onClick={() => window.print()}
+              aria-label="Export or Print Invoice PDF"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-all shadow-xs focus:outline-none focus:ring-2 focus:ring-[#1B4D3E]"
             >
-              <Share2 className="w-3.5 h-3.5" />
+              <Printer className="w-3.5 h-3.5" aria-hidden="true" />
+              <span>Export PDF</span>
+            </button>
+            <button
+              onClick={() => setIsShareOpen(true)}
+              aria-label="Share Invoice Summary"
+              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-slate-700 bg-white hover:bg-slate-100 border border-slate-200 rounded-xl transition-all shadow-xs focus:outline-none focus:ring-2 focus:ring-[#1B4D3E]"
+            >
+              <Share2 className="w-3.5 h-3.5" aria-hidden="true" />
               <span>Share</span>
             </button>
             {outstandingPaise > 0 && (
               <button
                 onClick={() => setIsPaymentOpen(true)}
-                className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-[#1B4D3E] hover:bg-[#153f33] rounded-xl shadow-xs transition-all"
+                aria-label="Record Payment"
+                className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-bold text-white bg-[#1B4D3E] hover:bg-[#153f33] rounded-xl shadow-xs transition-all focus:outline-none focus:ring-2 focus:ring-[#1B4D3E]"
               >
-                <DollarSign className="w-4 h-4" />
+                <DollarSign className="w-4 h-4" aria-hidden="true" />
                 <span>Record Payment</span>
               </button>
             )}

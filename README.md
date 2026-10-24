@@ -12,7 +12,7 @@
 
 You can directly download and install the native Android APK on any Android device:
 
-👉 **[Download Baaki.apk (v1.0.0)](https://github.com/iakash2701/baaki/raw/main/Baaki.apk)** (~19.7 MB)
+👉 **[Download Baaki.apk (v1.0.0)](https://github.com/iakash2701/baaki/raw/main/Baaki.apk)** (~20.8 MB)
 
 ## 🌟 Overview
 
@@ -23,6 +23,7 @@ You can directly download and install the native Android APK on any Android devi
 ## 🚀 Key Features
 
 - **📊 Executive Dashboard**: Real-time tracking of Total Outstanding, Confirmed Collections, Overdue Receivables, and Active Customers.
+- **📑 Financial Reports & Analytics**: Audited financial statements, date filters (All Time, This Month, 30 Days, Current FY), invoice status summaries, and customer receivables breakdown.
 - **⚡ Smart Recovery Queue**: Explainable 0–100 priority scoring for overdue invoices based on overdue days, relative balance ratio, partial payment status, and prior ledger opening balances.
 - **📄 GST Invoicing**: Create multi-item invoices with live GST calculations (CGST/SGST/IGST), custom payment terms, and automated numbering (`SP/2025-26/XXX`).
 - **💰 Payment Recording**: Supports partial or full payments via UPI, Bank Transfer (NEFT/RTGS), Cash, and Cheque with live balance validation.

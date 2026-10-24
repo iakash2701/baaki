@@ -17,7 +17,8 @@ import {
   CheckCircle2,
   Clock,
   LineChart,
-  ChevronRight
+  ChevronRight,
+  BarChart3
 } from 'lucide-react';
 
 export default function DashboardPage() {
@@ -41,10 +42,10 @@ export default function DashboardPage() {
   const quickActions = [
     { title: 'Invoices', to: '/invoices', icon: Receipt, desc: 'Issue & track' },
     { title: 'Customers', to: '/customers', icon: Users, desc: 'Manage ledgers' },
+    { title: 'Reports', to: '/reports', icon: BarChart3, desc: 'Sales & audits' },
     { title: 'Cash Flow', to: '/cashflow', icon: Wallet, desc: 'Track flows' },
     { title: 'Intelligence', to: '/intelligence', icon: LineChart, desc: 'Payment habits' },
-    { title: 'Smart Recovery', to: '/recovery', icon: TrendingUp, desc: 'Priority chase' },
-    { title: 'Showcase', to: '/showcase', icon: Star, desc: 'Judges tour' }
+    { title: 'Smart Recovery', to: '/recovery', icon: TrendingUp, desc: 'Priority chase' }
   ];
 
   return (

@@ -10,6 +10,7 @@ import CustomersPage from './pages/CustomersPage';
 import SmartRecoveryPage from './pages/SmartRecoveryPage';
 import CashFlowPage from './pages/CashFlowPage';
 import CustomerIntelligencePage from './pages/CustomerIntelligencePage';
+import FinancialReportsPage from './pages/FinancialReportsPage';
 import JudgesShowcasePage from './pages/JudgesShowcasePage';
 import MorePage from './pages/MorePage';
 import NotFoundPage from './pages/NotFoundPage';
@@ -37,6 +38,7 @@ export default function App() {
               <Route path="/recovery" element={<SmartRecoveryPage />} />
               <Route path="/cashflow" element={<CashFlowPage />} />
               <Route path="/intelligence" element={<CustomerIntelligencePage />} />
+              <Route path="/reports" element={<FinancialReportsPage />} />
               <Route path="/showcase" element={<JudgesShowcasePage />} />
               <Route path="/more" element={<MorePage />} />
               <Route path="*" element={<NotFoundPage />} />
