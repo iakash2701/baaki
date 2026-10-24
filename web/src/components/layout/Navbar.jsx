@@ -13,6 +13,7 @@ import {
   BarChart3,
   Download
 } from 'lucide-react';
+import UserProfileMenu from './UserProfileMenu';
 
 export default function Navbar() {
   const navItems = [
@@ -40,7 +41,7 @@ export default function Navbar() {
       {/* Desktop Sidebar */}
       <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-[#141414] border-r border-[#E2E8F0] dark:border-[#2D2D2D] min-h-screen fixed left-0 top-0 bottom-0 z-30 transition-colors duration-200">
         {/* Brand */}
-        <div className="p-6 border-b border-[#E2E8F0] dark:border-[#2D2D2D] bg-[#F8FAF9] dark:bg-[#0A0A0A]">
+        <div className="p-6 border-b border-[#E2E8F0] dark:border-[#2D2D2D] bg-[#F8FAF9] dark:bg-[#0A0A0A] flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-[#1B4D3E] text-white flex items-center justify-center font-bold text-xl shadow-md" aria-hidden="true">
               B
@@ -88,24 +89,24 @@ export default function Navbar() {
           </ul>
         </nav>
 
-        {/* Footer info card with Android APK download */}
-        <div className="p-4 border-t border-[#E2E8F0] dark:border-[#2D2D2D] bg-[#F8FAF9]/80 dark:bg-[#0A0A0A]/80">
-          <div className="p-3 bg-white dark:bg-[#141414] rounded-xl border border-slate-200/80 dark:border-[#2D2D2D] shadow-xs">
-            <div className="flex items-center justify-between text-xs font-bold text-slate-700 dark:text-[#F5F5F5] mb-1">
-              <span>Android App Active</span>
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-            </div>
-            <p className="text-xs text-slate-600 dark:text-[#A3A3A3] leading-relaxed">
-              v1.0.0 built from source. Offline-first Room database.
-            </p>
+        {/* Bottom Profile & Download Section */}
+        <div className="p-4 border-t border-[#E2E8F0] dark:border-[#2D2D2D] bg-[#F8FAF9]/80 dark:bg-[#0A0A0A]/80 space-y-3">
+          <div className="flex items-center justify-between">
+            <UserProfileMenu />
             <a
               href="/baaki.apk"
               download="Baaki.apk"
-              className="mt-2.5 flex items-center justify-center gap-1.5 w-full py-2 px-3 rounded-xl bg-[#1B4D3E] hover:bg-[#153f33] text-white text-xs font-bold shadow-2xs transition-all focus:outline-none focus:ring-2 focus:ring-[#1B4D3E]"
+              aria-label="Download Android APK"
+              className="p-2 rounded-xl border border-slate-200 dark:border-[#2D2D2D] hover:bg-slate-100 dark:hover:bg-[#1C1C1C] text-slate-700 dark:text-[#A3A3A3] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1B4D3E]"
+              title="Download Android APK"
             >
-              <Download className="w-3.5 h-3.5" aria-hidden="true" />
-              <span>Download Android APK</span>
+              <Download className="w-4 h-4" />
             </a>
+          </div>
+
+          <div className="p-2.5 bg-white dark:bg-[#141414] rounded-xl border border-slate-200/80 dark:border-[#2D2D2D] shadow-xs text-[11px] text-slate-500 dark:text-[#A3A3A3] flex items-center justify-between">
+            <span>Android App Active</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
           </div>
         </div>
       </aside>

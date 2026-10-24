@@ -1,22 +1,23 @@
 /**
- * storage.js — LocalStorage database and seed manager
+ * storage.js — Multi-user LocalStorage database and seed manager
+ * Scopes data strictly per authenticated user (or demo session) using a user prefix.
  * Manages customers, invoices, line items, payments, expenses, and activity logs.
- * Strictly mirrors Android's DemoDataSeeder.kt.
  */
 
-import { getFinancialYear } from '../util/financialYear';
+import { getFinancialYear } from '../util/financialYear.js';
 
-const STORAGE_KEY_PREFIX = 'baaki_v1_';
-
-export const StorageKeys = {
-  CUSTOMERS: `${STORAGE_KEY_PREFIX}customers`,
-  INVOICES: `${STORAGE_KEY_PREFIX}invoices`,
-  LINE_ITEMS: `${STORAGE_KEY_PREFIX}line_items`,
-  PAYMENTS: `${STORAGE_KEY_PREFIX}payments`,
-  EXPENSES: `${STORAGE_KEY_PREFIX}expenses`,
-  ACTIVITIES: `${STORAGE_KEY_PREFIX}activities`,
-  SEEDED: `${STORAGE_KEY_PREFIX}seeded_flag`
-};
+export function getStorageKeys(userId = 'demo-user') {
+  const prefix = `baaki_user_${userId || 'demo'}_`;
+  return {
+    CUSTOMERS: `${prefix}customers`,
+    INVOICES: `${prefix}invoices`,
+    LINE_ITEMS: `${prefix}line_items`,
+    PAYMENTS: `${prefix}payments`,
+    EXPENSES: `${prefix}expenses`,
+    ACTIVITIES: `${prefix}activities`,
+    SEEDED: `${prefix}seeded_flag`
+  };
+}
 
 export function loadItem(key, defaultValue) {
   try {
@@ -37,10 +38,11 @@ export function saveItem(key, value) {
   }
 }
 
-export function seedDemoDataIfEmpty() {
-  const existingCustomers = loadItem(StorageKeys.CUSTOMERS, []);
-  if (existingCustomers.length > 0 && localStorage.getItem(StorageKeys.SEEDED)) {
-    return; // Already seeded
+export function seedDemoDataIfEmpty(userId = 'demo-user') {
+  const keys = getStorageKeys(userId);
+  const existingCustomers = loadItem(keys.CUSTOMERS, []);
+  if (existingCustomers.length > 0 && localStorage.getItem(keys.SEEDED)) {
+    return; // Already seeded for this user
   }
 
   const now = Date.now();
@@ -57,6 +59,7 @@ export function seedDemoDataIfEmpty() {
   const customers = [
     {
       id: c1,
+      userId,
       name: 'Gupta Traders',
       phone: '9876543210',
       email: 'gupta.traders@example.com',
@@ -68,6 +71,7 @@ export function seedDemoDataIfEmpty() {
     },
     {
       id: c2,
+      userId,
       name: 'Apex Logistics',
       phone: '9123456789',
       email: 'contact@apexlogistics.in',
@@ -79,6 +83,7 @@ export function seedDemoDataIfEmpty() {
     },
     {
       id: c3,
+      userId,
       name: 'Shree Ram Enterprises',
       phone: '9988776655',
       email: null,
@@ -90,6 +95,7 @@ export function seedDemoDataIfEmpty() {
     },
     {
       id: c4,
+      userId,
       name: 'Balaji Packaging',
       phone: '9811122233',
       email: 'orders@balajipkg.co.in',
@@ -101,6 +107,7 @@ export function seedDemoDataIfEmpty() {
     },
     {
       id: c5,
+      userId,
       name: 'National Logistics',
       phone: '9700011122',
       email: null,
@@ -112,6 +119,7 @@ export function seedDemoDataIfEmpty() {
     },
     {
       id: c6,
+      userId,
       name: 'Perfect Printers',
       phone: '9655544332',
       email: 'hello@perfectprinters.in',
@@ -152,6 +160,7 @@ export function seedDemoDataIfEmpty() {
 
     invoices.push({
       id: invId,
+      userId,
       invoiceNumber: item.invNo,
       customerId: item.custId,
       issueDate: issue,
@@ -161,12 +170,13 @@ export function seedDemoDataIfEmpty() {
       discountTotal: 0,
       totalAmount: item.amount,
       status: status,
-      notes: `Demo order batch #${index + 1}`,
+      notes: `Order batch #${index + 1}`,
       createdAt: issue
     });
 
     lineItems.push({
       id: `li_${index + 1}`,
+      userId,
       invoiceId: invId,
       description: `Industrial Corrugated Boxes Batch ${index + 1}`,
       hsnSac: '481910',
@@ -177,9 +187,9 @@ export function seedDemoDataIfEmpty() {
     });
 
     if (index === 0) {
-      // Partial payment
       payments.push({
         id: 'pay_1',
+        userId,
         invoiceId: invId,
         customerId: item.custId,
         amount: 1000000, // ₹10,000
@@ -190,9 +200,9 @@ export function seedDemoDataIfEmpty() {
         createdAt: issue + 2 * dayMillis
       });
     } else if (isPaid) {
-      // Full settlement
       payments.push({
         id: `pay_${index + 1}`,
+        userId,
         invoiceId: invId,
         customerId: item.custId,
         amount: item.amount,
@@ -203,9 +213,9 @@ export function seedDemoDataIfEmpty() {
         createdAt: issue + 3 * dayMillis
       });
     } else if (index === 4) {
-      // Advance cash
       payments.push({
         id: 'pay_advance_c3',
+        userId,
         invoiceId: invId,
         customerId: item.custId,
         amount: 500000, // ₹5,000
@@ -221,6 +231,7 @@ export function seedDemoDataIfEmpty() {
   const expenses = [
     {
       id: 'exp_1',
+      userId,
       title: 'Godown Rent',
       category: 'RENT',
       amount: 1500000, // ₹15,000
@@ -230,6 +241,7 @@ export function seedDemoDataIfEmpty() {
     },
     {
       id: 'exp_2',
+      userId,
       title: 'Kraft Paper Raw Material',
       category: 'SUPPLIES',
       amount: 4500000, // ₹45,000
@@ -242,30 +254,32 @@ export function seedDemoDataIfEmpty() {
   const activities = [
     {
       id: 'act_seed',
-      title: 'Demo Data Initialized',
-      description: 'Seeded 6 Indian business customers, 10 invoices, payments & expenses for judges showcase.',
+      userId,
+      title: 'Data Initialized',
+      description: 'Workspace ready with default ledger and sample invoices.',
       eventType: 'SYSTEM',
       timestamp: now,
       relatedId: null
     }
   ];
 
-  saveItem(StorageKeys.CUSTOMERS, customers);
-  saveItem(StorageKeys.INVOICES, invoices);
-  saveItem(StorageKeys.LINE_ITEMS, lineItems);
-  saveItem(StorageKeys.PAYMENTS, payments);
-  saveItem(StorageKeys.EXPENSES, expenses);
-  saveItem(StorageKeys.ACTIVITIES, activities);
-  localStorage.setItem(StorageKeys.SEEDED, 'true');
+  saveItem(keys.CUSTOMERS, customers);
+  saveItem(keys.INVOICES, invoices);
+  saveItem(keys.LINE_ITEMS, lineItems);
+  saveItem(keys.PAYMENTS, payments);
+  saveItem(keys.EXPENSES, expenses);
+  saveItem(keys.ACTIVITIES, activities);
+  localStorage.setItem(keys.SEEDED, 'true');
 }
 
-export function resetAllData() {
-  localStorage.removeItem(StorageKeys.CUSTOMERS);
-  localStorage.removeItem(StorageKeys.INVOICES);
-  localStorage.removeItem(StorageKeys.LINE_ITEMS);
-  localStorage.removeItem(StorageKeys.PAYMENTS);
-  localStorage.removeItem(StorageKeys.EXPENSES);
-  localStorage.removeItem(StorageKeys.ACTIVITIES);
-  localStorage.removeItem(StorageKeys.SEEDED);
-  seedDemoDataIfEmpty();
+export function resetAllData(userId = 'demo-user') {
+  const keys = getStorageKeys(userId);
+  localStorage.removeItem(keys.CUSTOMERS);
+  localStorage.removeItem(keys.INVOICES);
+  localStorage.removeItem(keys.LINE_ITEMS);
+  localStorage.removeItem(keys.PAYMENTS);
+  localStorage.removeItem(keys.EXPENSES);
+  localStorage.removeItem(keys.ACTIVITIES);
+  localStorage.removeItem(keys.SEEDED);
+  seedDemoDataIfEmpty(userId);
 }

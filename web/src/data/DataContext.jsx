@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, useMemo, useCallback } from 'react';
 import {
-  StorageKeys,
+  getStorageKeys,
   loadItem,
   saveItem,
   seedDemoDataIfEmpty,
@@ -8,10 +8,14 @@ import {
 } from './storage';
 import { scoreInvoices } from '../domain/recoveryScorer';
 import { getFinancialYear } from '../util/financialYear';
+import { useAuth } from '../context/AuthContext';
 
 const DataContext = createContext(null);
 
 export function DataProvider({ children }) {
+  const { user } = useAuth();
+  const userId = user ? (user.id || 'authenticated') : 'guest';
+
   const [customers, setCustomers] = useState([]);
   const [invoices, setInvoices] = useState([]);
   const [lineItems, setLineItems] = useState([]);
@@ -20,51 +24,53 @@ export function DataProvider({ children }) {
   const [activities, setActivities] = useState([]);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  // Initialize and load from LocalStorage
+  // Initialize and load from isolated per-user LocalStorage
   const reloadData = useCallback(() => {
-    seedDemoDataIfEmpty();
-    setCustomers(loadItem(StorageKeys.CUSTOMERS, []));
-    setInvoices(loadItem(StorageKeys.INVOICES, []));
-    setLineItems(loadItem(StorageKeys.LINE_ITEMS, []));
-    setPayments(loadItem(StorageKeys.PAYMENTS, []));
-    setExpenses(loadItem(StorageKeys.EXPENSES, []));
-    setActivities(loadItem(StorageKeys.ACTIVITIES, []));
+    seedDemoDataIfEmpty(userId);
+    const keys = getStorageKeys(userId);
+    setCustomers(loadItem(keys.CUSTOMERS, []));
+    setInvoices(loadItem(keys.INVOICES, []));
+    setLineItems(loadItem(keys.LINE_ITEMS, []));
+    setPayments(loadItem(keys.PAYMENTS, []));
+    setExpenses(loadItem(keys.EXPENSES, []));
+    setActivities(loadItem(keys.ACTIVITIES, []));
     setIsInitialized(true);
-  }, []);
+  }, [userId]);
 
   useEffect(() => {
     reloadData();
   }, [reloadData]);
 
-  // Save changes to localStorage
+  // Save changes to isolated per-user keys
   const updateCustomers = useCallback((newCusts) => {
     setCustomers(newCusts);
-    saveItem(StorageKeys.CUSTOMERS, newCusts);
-  }, []);
+    saveItem(getStorageKeys(userId).CUSTOMERS, newCusts);
+  }, [userId]);
 
   const updateInvoices = useCallback((newInvs) => {
     setInvoices(newInvs);
-    saveItem(StorageKeys.INVOICES, newInvs);
-  }, []);
+    saveItem(getStorageKeys(userId).INVOICES, newInvs);
+  }, [userId]);
 
   const updateLineItems = useCallback((newItems) => {
     setLineItems(newItems);
-    saveItem(StorageKeys.LINE_ITEMS, newItems);
-  }, []);
+    saveItem(getStorageKeys(userId).LINE_ITEMS, newItems);
+  }, [userId]);
 
   const updatePayments = useCallback((newPays) => {
     setPayments(newPays);
-    saveItem(StorageKeys.PAYMENTS, newPays);
-  }, []);
+    saveItem(getStorageKeys(userId).PAYMENTS, newPays);
+  }, [userId]);
 
   const updateExpenses = useCallback((newExps) => {
     setExpenses(newExps);
-    saveItem(StorageKeys.EXPENSES, newExps);
-  }, []);
+    saveItem(getStorageKeys(userId).EXPENSES, newExps);
+  }, [userId]);
 
   const addActivity = useCallback((title, description, eventType, relatedId = null) => {
     const newAct = {
       id: `act_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`,
+      userId,
       title,
       description,
       eventType, // INVOICE_CREATED, PAYMENT_RECEIVED, CUSTOMER_ADDED, EXPENSE_RECORDED, SYSTEM
@@ -73,10 +79,10 @@ export function DataProvider({ children }) {
     };
     setActivities(prev => {
       const updated = [newAct, ...prev];
-      saveItem(StorageKeys.ACTIVITIES, updated);
+      saveItem(getStorageKeys(userId).ACTIVITIES, updated);
       return updated;
     });
-  }, []);
+  }, [userId]);
 
   // Action: Add customer
   const addCustomer = useCallback(({ name, phone, email, gstin, address, openingBalancePaise = 0, creditLimitPaise = 10000000 }) => {
@@ -86,6 +92,7 @@ export function DataProvider({ children }) {
     const id = `cust_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const newCustomer = {
       id,
+      userId,
       name: name.trim(),
       phone: phone.trim(),
       email: email?.trim() || null,
@@ -100,7 +107,7 @@ export function DataProvider({ children }) {
     updateCustomers(updated);
     addActivity('Customer Added', `Added customer ${newCustomer.name}`, 'CUSTOMER_ADDED', id);
     return newCustomer;
-  }, [customers, updateCustomers, addActivity]);
+  }, [customers, updateCustomers, addActivity, userId]);
 
   // Action: Generate next invoice number
   const generateNextInvoiceNumber = useCallback((issueDate = Date.now()) => {
@@ -132,6 +139,7 @@ export function DataProvider({ children }) {
 
       return {
         id: `li_${invoiceId}_${index + 1}`,
+        userId,
         invoiceId,
         description: (item.description || '').trim(),
         hsnSac: item.hsnSac?.trim() || null,
@@ -146,6 +154,7 @@ export function DataProvider({ children }) {
 
     const newInvoice = {
       id: invoiceId,
+      userId,
       invoiceNumber: invoiceNumber.trim(),
       customerId,
       issueDate: Number(issueDate) || Date.now(),
@@ -164,7 +173,7 @@ export function DataProvider({ children }) {
     addActivity('Invoice Created', `Created invoice ${newInvoice.invoiceNumber} for ₹${(totalAmount / 100).toFixed(2)}`, 'INVOICE_CREATED', invoiceId);
 
     return newInvoice;
-  }, [invoices, lineItems, updateInvoices, updateLineItems, addActivity]);
+  }, [invoices, lineItems, updateInvoices, updateLineItems, addActivity, userId]);
 
   // Action: Record payment
   const recordPayment = useCallback(({ invoiceId, amountPaise, paymentMethod = 'UPI', referenceNumber = null, notes = null }) => {
@@ -182,6 +191,7 @@ export function DataProvider({ children }) {
     const paymentId = `pay_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const newPayment = {
       id: paymentId,
+      userId,
       invoiceId,
       customerId: inv.customerId,
       amount: amt,
@@ -211,7 +221,7 @@ export function DataProvider({ children }) {
     addActivity('Payment Received', `Recorded payment of ₹${(amt / 100).toFixed(2)} via ${paymentMethod} for ${inv.invoiceNumber}`, 'PAYMENT_RECEIVED', paymentId);
 
     return newPayment;
-  }, [invoices, payments, updatePayments, updateInvoices, addActivity]);
+  }, [invoices, payments, updatePayments, updateInvoices, addActivity, userId]);
 
   // Action: Record expense
   const recordExpense = useCallback(({ title, category = 'OTHER', amountPaise, expenseDate = Date.now(), notes = null }) => {
@@ -222,6 +232,7 @@ export function DataProvider({ children }) {
     const expenseId = `exp_${Date.now()}_${Math.random().toString(36).substring(2, 7)}`;
     const newExpense = {
       id: expenseId,
+      userId,
       title: title.trim(),
       category,
       amount: amt,
@@ -233,13 +244,13 @@ export function DataProvider({ children }) {
     updateExpenses([newExpense, ...expenses]);
     addActivity('Expense Recorded', `Recorded expense ${newExpense.title} of ₹${(amt / 100).toFixed(2)} (${category})`, 'EXPENSE_RECORDED', expenseId);
     return newExpense;
-  }, [expenses, updateExpenses, addActivity]);
+  }, [expenses, updateExpenses, addActivity, userId]);
 
-  // Action: Reset demo
+  // Action: Reset demo / workspace data
   const resetDemo = useCallback(() => {
-    resetAllData();
+    resetAllData(userId);
     reloadData();
-  }, [reloadData]);
+  }, [reloadData, userId]);
 
   // Helper: Detailed view for a single invoice
   const getInvoiceDetails = useCallback((invoiceId) => {
@@ -342,7 +353,6 @@ export function DataProvider({ children }) {
       const totalInvoiced = custInvoices.reduce((sum, inv) => sum + (inv.totalAmount || 0), 0);
       const totalPaid = custPayments.reduce((sum, p) => sum + (p.amount || 0), 0);
       
-      // Outstanding = openingBalance + totalInvoiced - totalPaid
       const outstanding = Math.max(0, (cust.openingBalance || 0) + totalInvoiced - totalPaid);
 
       const unpaidInvoiceCount = custInvoices.filter(inv => {
@@ -350,7 +360,6 @@ export function DataProvider({ children }) {
         return (inv.totalAmount - invPaid) > 0;
       }).length;
 
-      // Average payment delay on settled invoices
       const delays = [];
       custInvoices.forEach(inv => {
         const invPays = paymentsByInvoice.get(inv.id) || [];
