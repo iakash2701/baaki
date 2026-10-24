@@ -19,8 +19,16 @@ export default function App() {
     <DataProvider>
       <BrowserRouter>
         <div className="min-h-screen bg-[#F8FAF9] text-[#111C16] flex flex-col">
+          {/* Skip link for keyboard users (WCAG 2.4.1) */}
+          <a
+            href="#main-content"
+            className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 z-50 px-4 py-2 bg-[#1B4D3E] text-white rounded-xl shadow-lg font-bold text-xs focus:outline-none focus:ring-2 focus:ring-emerald-400"
+          >
+            Skip to main content
+          </a>
+
           <Navbar />
-          <main className="flex-1 md:pl-64 transition-all w-full">
+          <main id="main-content" tabIndex={-1} className="flex-1 md:pl-64 transition-all w-full focus:outline-none">
             <Routes>
               <Route path="/" element={<DashboardPage />} />
               <Route path="/invoices" element={<InvoicesPage />} />
