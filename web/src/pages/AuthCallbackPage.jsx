@@ -3,11 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabaseClient';
 import { Loader2 } from 'lucide-react';
 
-/**
- * Handles the OAuth redirect callback from Supabase.
- * Supabase automatically parses the URL hash/query on the client
- * via onAuthStateChange, so we just need to wait and redirect.
- */
 export default function AuthCallbackPage() {
   const navigate = useNavigate();
 
@@ -19,18 +14,39 @@ export default function AuthCallbackPage() {
       return;
     }
 
-    // Supabase processes the callback automatically via detectSessionInUrl.
-    // We just need to listen for the session to be established.
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
+    let isHandled = false;
+
+    // Check if session is already retrieved from the hash / URL
+    supabase.auth.getSession().then(({ data: { session }, error }) => {
+      if (!isHandled && session) {
+        isHandled = true;
         navigate('/', { replace: true });
-      } else if (event === 'SIGNED_OUT') {
+      }
+    });
+
+    // Listen for the auth state transition
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (!isHandled && (event === 'SIGNED_IN' || session)) {
+        isHandled = true;
+        navigate('/', { replace: true });
+      } else if (!isHandled && event === 'SIGNED_OUT') {
+        isHandled = true;
         navigate('/signin', { replace: true });
       }
     });
 
-    // Fallback: redirect after 5 s in case the event already fired
-    const timeout = setTimeout(() => navigate('/', { replace: true }), 5000);
+    // Safety timeout: if after 3s we have a session, go to root, otherwise signin
+    const timeout = setTimeout(async () => {
+      if (!isHandled) {
+        isHandled = true;
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          navigate('/', { replace: true });
+        } else {
+          navigate('/signin', { replace: true });
+        }
+      }
+    }, 3500);
 
     return () => {
       subscription.unsubscribe();
