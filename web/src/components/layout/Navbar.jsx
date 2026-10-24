@@ -8,7 +8,8 @@ import {
   Wallet,
   Star,
   Activity,
-  Menu
+  Menu,
+  LineChart
 } from 'lucide-react';
 
 export default function Navbar() {
@@ -18,7 +19,7 @@ export default function Navbar() {
     { to: '/invoices', label: 'Invoices', icon: Receipt },
     { to: '/customers', label: 'Customers', icon: Users },
     { to: '/cashflow', label: 'Cash Flow', icon: Wallet },
-    { to: '/intelligence', label: 'Intelligence', icon: Users },
+    { to: '/intelligence', label: 'Intelligence', icon: LineChart },
     { to: '/showcase', label: 'Showcase', icon: Star },
     { to: '/more', label: 'More', icon: Menu }
   ];

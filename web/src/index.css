@@ -4,6 +4,24 @@
 
 :root {
   font-family: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+
+  /* Baaki Design Tokens — Floto Usability Palette Consolidation */
+  --color-primary: #1B4D3E;
+  --color-primary-light: #2C6B56;
+  --color-primary-dark: #12352B;
+  --color-accent-mint: #A3E4D7;
+
+  /* Text Token Hierarchy */
+  --color-text-primary: #0F172A;   /* slate-900 */
+  --color-text-secondary: #334155; /* slate-700 */
+  --color-text-muted: #64748B;     /* slate-500 */
+  --color-text-subtle: #94A3B8;    /* slate-400 */
+
+  /* Semantic Status Tokens */
+  --color-status-success: #059669; /* emerald-600 */
+  --color-status-warning: #D97706; /* amber-600 */
+  --color-status-danger: #E11D48;  /* rose-600 */
+  --color-status-info: #0284C7;    /* sky-600 */
 }
 
 /* Custom scrollbars */

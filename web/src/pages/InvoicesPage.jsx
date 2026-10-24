@@ -6,7 +6,7 @@ import CreateInvoiceModal from '../components/invoices/CreateInvoiceModal';
 import { useData } from '../data/DataContext';
 import { formatINR } from '../domain/money';
 import { formatDate } from '../util/invoiceShareFormatter';
-import { Plus, Search, Filter, Receipt, Clock, AlertCircle } from 'lucide-react';
+import { Plus, Search, Filter, Receipt, Clock, AlertCircle, ChevronRight } from 'lucide-react';
 
 export default function InvoicesPage() {
   const navigate = useNavigate();
@@ -39,6 +39,13 @@ export default function InvoicesPage() {
     });
   }, [invoicesWithCustomer, search, filterStatus]);
 
+  const filterOptions = [
+    { id: 'ALL', label: 'All Invoices' },
+    { id: 'PENDING', label: 'Pending' },
+    { id: 'OVERDUE', label: 'Overdue' },
+    { id: 'PAID', label: 'Paid' }
+  ];
+
   return (
     <div className="pb-24 md:pb-12">
       <Header
@@ -70,17 +77,17 @@ export default function InvoicesPage() {
           </div>
 
           <div className="flex items-center gap-1.5 w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
-            {['ALL', 'PENDING', 'OVERDUE', 'PAID'].map((status) => (
+            {filterOptions.map((opt) => (
               <button
-                key={status}
-                onClick={() => setFilterStatus(status)}
+                key={opt.id}
+                onClick={() => setFilterStatus(opt.id)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all whitespace-nowrap ${
-                  filterStatus === status
+                  filterStatus === opt.id
                     ? 'bg-[#1B4D3E] text-white shadow-xs'
                     : 'text-slate-600 hover:bg-slate-100'
                 }`}
               >
-                {status}
+                {opt.label}
               </button>
             ))}
           </div>
@@ -111,53 +118,67 @@ export default function InvoicesPage() {
             </div>
           ) : (
             <div className="divide-y divide-slate-100">
-              {filteredInvoices.map((item) => (
-                <div
-                  key={item.invoice.id}
-                  onClick={() => navigate(`/invoices/${item.invoice.id}`)}
-                  className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/80 cursor-pointer transition-colors"
-                >
-                  <div className="space-y-1.5">
-                    <div className="flex items-center gap-2.5">
-                      <span className="font-extrabold text-sm sm:text-base text-slate-900 tracking-tight">
-                        {item.invoice.invoiceNumber}
-                      </span>
-                      <StatusBadge status={item.invoice.status} />
-                    </div>
-                    <div className="text-xs sm:text-sm font-semibold text-slate-700">
-                      {item.customerName}
-                    </div>
-                    <div className="text-xs text-slate-400 flex flex-wrap items-center gap-2 sm:gap-4">
-                      <span>Issued: {formatDate(item.invoice.issueDate)}</span>
-                      <span>•</span>
-                      <span className={item.invoice.dueDate < Date.now() && item.outstandingPaise > 0 ? 'text-rose-600 font-semibold' : ''}>
-                        Due: {formatDate(item.invoice.dueDate)}
-                      </span>
-                      {item.invoice.notes && (
-                        <>
-                          <span>•</span>
-                          <span className="truncate max-w-xs">{item.invoice.notes}</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
+              {filteredInvoices.map((item) => {
+                const now = Date.now();
+                const isOverdue = item.invoice.dueDate < now && item.outstandingPaise > 0;
 
-                  <div className="flex items-center justify-between sm:flex-col sm:items-end gap-1 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
-                    <div className="text-sm sm:text-base font-extrabold text-slate-900">
-                      {formatINR(item.invoice.totalAmount)}
+                return (
+                  <div
+                    key={item.invoice.id}
+                    onClick={() => navigate(`/invoices/${item.invoice.id}`)}
+                    className="p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 hover:bg-slate-50/80 cursor-pointer transition-colors group"
+                  >
+                    <div className="space-y-1.5">
+                      <div className="flex items-center gap-2.5">
+                        <span className="font-extrabold text-sm sm:text-base text-[#1B4D3E] group-hover:underline tracking-tight">
+                          {item.invoice.invoiceNumber}
+                        </span>
+                        <StatusBadge status={item.invoice.status} />
+                      </div>
+                      <div className="text-xs sm:text-sm font-semibold text-slate-700">
+                        {item.customerName}
+                      </div>
+                      <div className="text-xs text-slate-400 flex flex-wrap items-center gap-2 sm:gap-4">
+                        <span>Issued: {formatDate(item.invoice.issueDate)}</span>
+                        <span>•</span>
+                        <span className={isOverdue ? 'text-rose-600 font-semibold' : ''}>
+                          Due: {formatDate(item.invoice.dueDate)}
+                        </span>
+                        {item.invoice.notes && (
+                          <>
+                            <span>•</span>
+                            <span className="truncate max-w-xs">{item.invoice.notes}</span>
+                          </>
+                        )}
+                      </div>
                     </div>
-                    {item.outstandingPaise > 0 ? (
-                      <div className="text-xs font-bold text-rose-600">
-                        Due: {formatINR(item.outstandingPaise)}
+
+                    <div className="flex items-center justify-between sm:justify-end gap-4 pt-2 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+                      <div className="flex items-center justify-between sm:flex-col sm:items-end gap-1">
+                        <div className="text-sm sm:text-base font-extrabold text-slate-900">
+                          {formatINR(item.invoice.totalAmount)}
+                        </div>
+                        {item.outstandingPaise > 0 ? (
+                          isOverdue ? (
+                            <div className="text-xs font-bold text-rose-600">
+                              Overdue: {formatINR(item.outstandingPaise)}
+                            </div>
+                          ) : (
+                            <div className="text-xs font-medium text-slate-600">
+                              Balance: {formatINR(item.outstandingPaise)}
+                            </div>
+                          )
+                        ) : (
+                          <div className="text-xs font-semibold text-emerald-600">
+                            Settled in full
+                          </div>
+                        )}
                       </div>
-                    ) : (
-                      <div className="text-xs font-bold text-emerald-600">
-                        Settled in full
-                      </div>
-                    )}
+                      <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors hidden sm:block" />
+                    </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

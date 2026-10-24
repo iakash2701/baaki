@@ -41,9 +41,9 @@ export default function Header({ title, subtitle, actionButton }) {
           <Link
             to="/showcase"
             title="Judges Showcase"
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold text-[#0A2920] bg-[#A3E4D7] hover:bg-[#8ee0d0] rounded-xl transition-all shadow-xs"
+            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-600 hover:text-slate-900 bg-white hover:bg-slate-50 border border-slate-200 rounded-xl transition-all shadow-xs"
           >
-            <Star className="w-3.5 h-3.5 fill-[#0A2920]" />
+            <Star className="w-3.5 h-3.5 text-amber-500" />
             <span className="hidden sm:inline">Showcase</span>
           </Link>
         </div>

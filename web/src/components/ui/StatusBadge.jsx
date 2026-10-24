@@ -25,16 +25,16 @@ export default function StatusBadge({ status, className = '' }) {
       bg: 'bg-slate-100 text-slate-700 border-slate-200'
     },
     HIGH: {
-      label: 'HIGH PRIORITY',
-      bg: 'bg-rose-100 text-rose-800 border-rose-300'
+      label: 'High Priority',
+      bg: 'bg-rose-50 text-rose-700 border-rose-200'
     },
     MEDIUM: {
-      label: 'MEDIUM',
-      bg: 'bg-amber-100 text-amber-800 border-amber-300'
+      label: 'Medium',
+      bg: 'bg-amber-50 text-amber-700 border-amber-200'
     },
     LOW: {
-      label: 'LOW',
-      bg: 'bg-slate-100 text-slate-800 border-slate-300'
+      label: 'Low',
+      bg: 'bg-slate-100 text-slate-700 border-slate-200'
     }
   };
 
