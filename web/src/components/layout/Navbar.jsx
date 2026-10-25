@@ -1,0 +1,143 @@
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import {
+  Home,
+  Receipt,
+  Users,
+  TrendingUp,
+  Wallet,
+  Star,
+  Activity,
+  Menu,
+  LineChart,
+  BarChart3,
+  Download
+} from 'lucide-react';
+import UserProfileMenu from './UserProfileMenu';
+
+export default function Navbar() {
+  const navItems = [
+    { to: '/', label: 'Home', icon: Home, end: true },
+    { to: '/recovery', label: 'Smart Recovery', icon: TrendingUp },
+    { to: '/invoices', label: 'Invoices', icon: Receipt },
+    { to: '/customers', label: 'Customers', icon: Users },
+    { to: '/cashflow', label: 'Cash Flow', icon: Wallet },
+    { to: '/reports', label: 'Financial Reports', icon: BarChart3 },
+    { to: '/intelligence', label: 'Intelligence', icon: LineChart },
+    { to: '/showcase', label: 'Showcase', icon: Star },
+    { to: '/more', label: 'More', icon: Menu, ariaLabel: 'More navigation and settings' }
+  ];
+
+  const mobileNavItems = [
+    { to: '/', label: 'Home', icon: Home, end: true },
+    { to: '/recovery', label: 'Recovery', icon: TrendingUp },
+    { to: '/invoices', label: 'Invoices', icon: Receipt },
+    { to: '/cashflow', label: 'Cash Flow', icon: Wallet },
+    { to: '/more', label: 'More', icon: Menu, ariaLabel: 'More navigation and settings' }
+  ];
+
+  return (
+    <>
+      {/* Desktop Sidebar */}
+      <aside className="hidden md:flex flex-col w-64 bg-white dark:bg-[#141414] border-r border-[#E2E8F0] dark:border-[#2D2D2D] min-h-screen fixed left-0 top-0 bottom-0 z-30 transition-colors duration-200">
+        {/* Brand */}
+        <div className="p-6 border-b border-[#E2E8F0] dark:border-[#2D2D2D] bg-[#F8FAF9] dark:bg-[#0A0A0A] flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-[#1B4D3E] text-white flex items-center justify-center font-bold text-xl shadow-md" aria-hidden="true">
+              B
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5 font-extrabold text-lg text-[#111C16] dark:text-[#F5F5F5] tracking-tight">
+                <span role="heading" aria-level="2">Baaki</span>
+                <span className="text-xs px-1.5 py-0.5 rounded bg-[#A3E4D7] text-[#0A2920] font-semibold">
+                  <abbr title="Professional Edition" className="no-underline">PRO</abbr>
+                </span>
+              </div>
+              <p className="text-xs text-slate-600 dark:text-[#A3A3A3] font-medium leading-normal">Sharma Packaging 🇮🇳</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Nav Links */}
+        <nav aria-label="Main Navigation" className="flex-1 py-4 px-3 overflow-y-auto">
+          <h2 className="px-3 mb-2 text-xs font-bold text-slate-600 dark:text-[#A3A3A3] uppercase tracking-wider">
+            Main Menu
+          </h2>
+          <ul className="space-y-1">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              return (
+                <li key={item.to}>
+                  <NavLink
+                    to={item.to}
+                    end={item.end}
+                    aria-label={item.ariaLabel || item.label}
+                    className={({ isActive }) =>
+                      `flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-semibold transition-all focus:outline-none focus:ring-2 focus:ring-[#1B4D3E] ${
+                        isActive
+                          ? 'bg-[#1B4D3E] text-white shadow-sm'
+                          : 'text-slate-700 dark:text-[#A3A3A3] hover:text-[#111C16] dark:hover:text-[#F5F5F5] hover:bg-slate-100/70 dark:hover:bg-[#1C1C1C]'
+                      }`
+                    }
+                  >
+                    <Icon className="w-5 h-5 flex-shrink-0" aria-hidden="true" />
+                    <span>{item.label}</span>
+                  </NavLink>
+                </li>
+              );
+            })}
+          </ul>
+        </nav>
+
+        {/* Bottom Profile & Download Section */}
+        <div className="p-4 border-t border-[#E2E8F0] dark:border-[#2D2D2D] bg-[#F8FAF9]/80 dark:bg-[#0A0A0A]/80 space-y-3">
+          <div className="flex items-center justify-between">
+            <UserProfileMenu />
+            <a
+              href="/baaki.apk"
+              download="Baaki.apk"
+              aria-label="Download Android APK"
+              className="p-2 rounded-xl border border-slate-200 dark:border-[#2D2D2D] hover:bg-slate-100 dark:hover:bg-[#1C1C1C] text-slate-700 dark:text-[#A3A3A3] transition-colors focus:outline-none focus:ring-2 focus:ring-[#1B4D3E]"
+              title="Download Android APK"
+            >
+              <Download className="w-4 h-4" />
+            </a>
+          </div>
+
+          <div className="p-2.5 bg-white dark:bg-[#141414] rounded-xl border border-slate-200/80 dark:border-[#2D2D2D] shadow-xs text-[11px] text-slate-500 dark:text-[#A3A3A3] flex items-center justify-between">
+            <span>Android App Active</span>
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
+          </div>
+        </div>
+      </aside>
+
+      {/* Mobile Bottom Navigation */}
+      <nav aria-label="Mobile Navigation" className="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-[#141414]/95 backdrop-blur-md border-t border-[#E2E8F0] dark:border-[#2D2D2D] px-2 py-1 shadow-lg transition-colors duration-200">
+        <ul className="flex items-center justify-around list-none m-0 p-0">
+          {mobileNavItems.map((item) => {
+            const Icon = item.icon;
+            return (
+              <li key={item.to} className="flex-1 text-center">
+                <NavLink
+                  to={item.to}
+                  end={item.end}
+                  aria-label={item.ariaLabel || item.label}
+                  className={({ isActive }) =>
+                    `flex flex-col items-center justify-center py-1 px-2 min-w-[56px] rounded-lg transition-colors focus:outline-none focus:ring-1 focus:ring-[#1B4D3E] ${
+                      isActive
+                        ? 'text-[#1B4D3E] dark:text-emerald-400 font-bold'
+                        : 'text-slate-600 dark:text-[#A3A3A3] font-medium hover:text-slate-900 dark:hover:text-[#F5F5F5]'
+                    }`
+                  }
+                >
+                  <Icon className="w-5 h-5 mb-0.5" aria-hidden="true" />
+                  <span className="text-xs leading-tight tracking-tight">{item.label}</span>
+                </NavLink>
+              </li>
+            );
+          })}
+        </ul>
+      </nav>
+    </>
+  );
+}
