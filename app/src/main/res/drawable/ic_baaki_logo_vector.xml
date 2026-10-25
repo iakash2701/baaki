@@ -1,0 +1,44 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+  <!-- Background with pale mint gradient look -->
+  <path
+      android:fillColor="#F0FDF4"
+      android:pathData="M24,0h60c13.255,0 24,10.745 24,24v60c0,13.255 -10.745,24 -24,24H24C10.745,108 0,97.255 0,84V24C0,10.745 10.745,0 24,0z"/>
+  <!-- Dark forest-green 'B' document shape backing -->
+  <path
+      android:fillColor="#1B4D3E"
+      android:pathData="M32,18h26c10.493,0 19,8.507 19,19c0,5.247 -2.128,10.003 -5.567,13.443C74.872,53.883,77,58.639,77,63.886C77,74.444,68.444,83,57.886,83H32V18z"/>
+  <!-- Emerald green inner layer -->
+  <path
+      android:fillColor="#229954"
+      android:pathData="M32,38h21c4.97,0 9,4.03 9,9s-4.03,9 -9,9H32V38z"/>
+  <!-- White Invoice Paper -->
+  <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M39,27h20c2.209,0 4,1.791 4,4v30c0,2.209 -1.791,4 -4,4H39c-2.209,0 -4,-1.791 -4,-4V31c0,-2.209 1.791,-4 4,-4z"/>
+  <!-- Invoice green fold corner -->
+  <path
+      android:fillColor="#2ECC71"
+      android:pathData="M55,27l8,8h-4c-2.209,0 -4,-1.791 -4,-4V27z"/>
+  <!-- Rupee symbol on document -->
+  <path
+      android:fillColor="#1B4D3E"
+      android:pathData="M44,36h6v1.5h-6zM44,40h6v1.5h-6zM44,36v8.5h1.25v-2.5h2.5l2.5,2.5h-1.562l-1.875,-1.875h0.937c1.105,0 2,-0.895 2,-2s-0.895,-2 -2,-2h-2.5v-2.625h2.5c0.69,0 1.25,-0.56 1.25,-1.25s-0.56,-1.25 -1.25,-1.25h-2.5v-0.75h-1.25v0.75h-1.25v1.25h1.25v0.625z"/>
+  <!-- Green Coin Badge with Rupee symbol -->
+  <path
+      android:fillColor="#1E8449"
+      android:pathData="M60,52c7.18,0 13,5.82 13,13s-5.82,13 -13,13s-13,-5.82 -13,-13s5.82,-13 13,-13z"/>
+  <path
+      android:fillColor="#2ECC71"
+      android:pathData="M60,53.8c6.186,0 11.2,5.014 11.2,11.2s-5.014,11.2 -11.2,11.2s-11.2,-5.014 -11.2,-11.2s5.014,-11.2 11.2,-11.2z"/>
+  <path
+      android:fillColor="#FFFFFF"
+      android:pathData="M58.5,59h3v1.2h-1.2v1.2h1.2v1.2h-1.2v1.5h-0.6v-1.5h-1.2v1.5h-0.6v-1.5h-0.4c-0.828,0 -1.5,-0.672 -1.5,-1.5s0.672,-1.5 1.5,-1.5h1.2v-1.2h-1.2v-1.2h1.2v-1.2z"/>
+  <!-- Leaf detail on top right of document -->
+  <path
+      android:fillColor="#2ECC71"
+      android:pathData="M73,50c-2.5,0 -5,1.5 -6,4c2.5,0.8 5,-0.8 6,-4z"/>
+</vector>
